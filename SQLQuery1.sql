@@ -1,98 +1,113 @@
--- Stored procedure that prints "Hello, world!"
-CREATE PROCEDURE HelloWorld AS BEGIN PRINT 'Hello, world!'; END;
+﻿CREATE DATABASE [Procedury]
 GO
 
--- Stored procedure that returns information about the current time
-CREATE PROCEDURE GetCurrentTime AS BEGIN SELECT GETDATE() AS CurrentTime; END;
+USE [Procedury]
 GO
 
--- Stored procedure that returns information about the current date
-CREATE PROCEDURE GetCurrentDate AS BEGIN SELECT GETDATE() AS CurrentDate; END;
+-- The stored procedure outputs �Hello, world!�
+CREATE PROCEDURE PrintHello
+AS
+BEGIN
+    PRINT 'Hello, world!'
+END
 GO
 
--- Stored procedure that takes three numbers and returns their sum
+-- The stored procedure returns information about the current time
+CREATE PROCEDURE GetCurrentTime
+AS
+BEGIN
+    SELECT GETDATE() AS CurrentTime
+END
+GO
+
+-- The stored procedure returns information about the current date
+CREATE PROCEDURE GetCurrentDate
+AS
+BEGIN
+    SELECT CONVERT(date, GETDATE()) AS CurrentDate
+END
+GO
+
+-- The stored procedure takes three numbers and returns their sum
 CREATE PROCEDURE GetSum
-    @Num1 INT,
-    @Num2 INT,
-    @Num3 INT
+    @num1 INT,
+    @num2 INT,
+    @num3 INT
 AS
 BEGIN
-    SELECT @Num1 + @Num2 + @Num3 AS Sum;
-END;
+    SELECT @num1 + @num2 + @num3 AS Sum
+END
 GO
 
--- Stored procedure that takes three numbers and returns their average
+-- The stored procedure takes three numbers and returns the arithmetic mean of the three numbers
 CREATE PROCEDURE GetAverage
-    @Num1 INT,
-    @Num2 INT,
-    @Num3 INT
+    @num1 INT,
+    @num2 INT,
+    @num3 INT
 AS
 BEGIN
-    SELECT (@Num1 + @Num2 + @Num3) / 3.0 AS Average;
-END;
+    SELECT AVG(CAST(Value AS FLOAT)) AS Average
+    FROM (VALUES (@num1), (@num2), (@num3)) AS Numbers(Value)
+END
 GO
 
--- Stored procedure that takes three numbers and returns the maximum value
-CREATE PROCEDURE GetMax
-    @Num1 INT,
-    @Num2 INT,
-    @Num3 INT
+-- The stored procedure takes three numbers and returns the maximum value
+CREATE PROCEDURE GetMaxValue
+    @num1 INT,
+    @num2 INT,
+    @num3 INT
 AS
 BEGIN
     SELECT MAX(Value) AS MaxValue
-    FROM (VALUES (@Num1), (@Num2), (@Num3)) AS Numbers(Value);
-END;
+    FROM (VALUES (@num1), (@num2), (@num3)) AS Numbers(Value)
+END
 GO
 
--- Stored procedure that takes three numbers and returns the minimum value
-CREATE PROCEDURE GetMin
-    @Num1 INT,
-    @Num2 INT,
-    @Num3 INT
+-- The stored procedure takes three numbers and returns the minimum value
+CREATE PROCEDURE GetMinValue
+    @num1 INT,
+    @num2 INT,
+    @num3 INT
 AS
 BEGIN
     SELECT MIN(Value) AS MinValue
-    FROM (VALUES (@Num1), (@Num2), (@Num3)) AS Numbers(Value);
-END;
+    FROM (VALUES (@num1), (@num2), (@num3)) AS Numbers(Value)
+END
 GO
 
--- Stored procedure that takes a number and a symbol and prints a line of length equal to the number
+-- The stored procedure takes a number and a character and displays a line
 CREATE PROCEDURE DrawLine
-    @Length INT,
-    @Symbol CHAR(1)
+    @length INT,
+    @symbol CHAR(1)
 AS
 BEGIN
-    DECLARE @Line VARCHAR(MAX);
-    SET @Line = REPLICATE(@Symbol, @Length);
-    PRINT @Line;
-END;
+    DECLARE @line VARCHAR(MAX) = REPLICATE(@symbol, @length)
+    PRINT @line
+END
 GO
 
--- Stored procedure that takes a number and returns its factorial
+-- The stored procedure takes a number as a parameter and returns its factorial
 CREATE PROCEDURE GetFactorial
-    @Number INT
+    @number INT
 AS
 BEGIN
-    DECLARE @Factorial BIGINT = 1;
-    DECLARE @Counter INT = 1;
-    
-    WHILE @Counter <= @Number
+    DECLARE @factorial BIGINT = 1
+    DECLARE @i INT = 1
+    WHILE @i <= @number
     BEGIN
-        SET @Factorial = @Factorial * @Counter;
-        SET @Counter = @Counter + 1;
-    END;
-    
-    SELECT @Factorial AS Factorial;
-END;
+        SET @factorial = @factorial * @i
+        SET @i = @i + 1
+    END
+    SELECT @factorial AS Factorial
+END
 GO
 
--- Stored procedure that takes a number and a power and returns the number raised to the power
-CREATE PROCEDURE GetPower
-    @Number INT,
-    @Power INT
+-- The stored procedure takes two numeric parameters and returns a number raised to the power
+CREATE PROCEDURE Power
+    @base FLOAT,
+    @exponent INT
 AS
 BEGIN
-    DECLARE @Result FLOAT = POWER(@Number, @Power);
-    SELECT @Result AS Result;
-END;
+    SELECT POWER(@base, @exponent) AS Result
+END
 GO
